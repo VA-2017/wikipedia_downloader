@@ -1,4 +1,4 @@
-# wIkipedia_downloader
+# wikipedia_downloader
 A bot that downloads the text of random wikipedia pages
 
 ## Usage
