@@ -1,12 +1,15 @@
 # coding=utf-8
-import wikipedia, re, os
+import os
+import re
+import wikipedia
 
 articles_path = 'articles/'
+
 
 def get_random_wikipedia_article():
     title = wikipedia.random()
     try:
-        content = wikipedia.page(title)
+        return wikipedia.page(title)
     except wikipedia.exceptions.DisambiguationError as err:
         print('⚠️  Randomly picked disambiguation page: ' + err.title + ', picking new one...')
         return get_random_wikipedia_article()
@@ -16,28 +19,31 @@ def get_random_wikipedia_article():
     except Exception:
         print('😐  Something unexpected happened, picking new one...')
         return get_random_wikipedia_article()
-    return wikipedia.page(title)
+
 
 def create_articles_folder():
     if not os.path.exists(articles_path):
         os.makedirs(articles_path)
 
-def clean_filename(name):
-    clean_name = re.sub('[^a-zA-Z0-9_\(\)\s]', '', name)
+
+def clean_filename(filename):
+    clean_name = re.sub('[^a-zA-Z0-9_()\s]', '', filename)
     clean_name = re.sub('\s+', ' ', clean_name)
     return clean_name
 
-def save_article(name, content):
-    filename = articles_path + name + '.txt'
+
+def save_article(article_name, content):
+    filename = articles_path + article_name + '.txt'
     file = open(filename, "w")
     try:
         file.write(content)
     except:
-        print('⛔  Failed to save article: ' + name)
+        print('⛔  Failed to save article: ' + article_name)
         file.close()
         os.remove(filename)
     else:
-        print('✔️  Saved article: ' + name)
+        print('✔️  Saved article: ' + article_name)
+
 
 if __name__ == '__main__':
     import warnings
